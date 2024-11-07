@@ -68,7 +68,7 @@ de indicadores informados nos arquivos de entrada, que começam sempre do valor 
 - **after_all_insert**: script SQL a ser executado depois que todos os dados forem inseridos no banco.  
 Tem por objetivo atualizar dados no banco de dados que não são informados nas planilhas.   
 Ex:
-```postgresql
+```sql
 -- Insere o link para a imagem no Setor Estratégico na tabela image
 INSERT INTO _schema_.image (id, imageurl, indicator_id)   
 SELECT _min_value_,'https://s3.sa-east-1.amazonaws.com/cache-sistema.adaptabrasil.mcti.gov.br/imagens/201.svg', _min_value_ ON CONFLICT DO NOTHING;
