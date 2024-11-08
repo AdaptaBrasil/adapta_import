@@ -8,7 +8,7 @@ Os dados de entrada serão em formato XLSX, e devem ter sido antes validados pel
 ## Características Técnicas
 
 ### Linguagem de Programação
-- **Python**: O Adapta Parser é desenvolvido em Python.
+O Adapta Import é desenvolvido em Python.
 
 ### Dependências
 - **Pandas**: Utilizado para a leitura, manipulação e análise de dados em arquivos de planilhas.
@@ -32,7 +32,7 @@ O nome dessa variável é também indicado na linha de comando.
 
 ### Argumentos de execução
 - **--schema**: (obrigatório) Schema destinatário dos dados.
-- **--conn_variable_name**: (obrigatório) Variável de ambiente com os parâmetros de conexão. Essa variável deve
+- **--conn_variable_name**: (obrigatório) Nome da variável de ambiente com os parâmetros de conexão. O conteúdo dessa variável deve
 seguir o formato especificado abaixo:
 ```
 postgresql+psycopg2://<usuário>:<senha>@<ip do servidor>:<porta>/<banco de dados>
@@ -42,7 +42,7 @@ Mais informações [aqui](https://www.geeksforgeeks.org/connecting-postgresql-wi
 - **--sep_id**: Id do Setor Estratégico destinatário dos dados no banco. Os dados referentes ao Setor já deverão existir na tabela **sep** com o id aqui indicado.
 - **--input_folder**: Caminho para a pasta de entrada. Nessa pasta deverão obrigatoriamente existir os arquivos com os dados para importação:
 **cenários.xlsx**, **composição.xlsx**, **descrição.xlsx**, **referência_temporal.xlsx**, **valores.xlsx**. 
-- O arquivo **proporcionalidades.xlsx** é opcional, existirá a depender das características do Setor Estratégico.  
+O arquivo **proporcionalidades.xlsx** é opcional, existirá a depender das características do Setor Estratégico.  
 A especificação do formato e conteúdo desses arquivos encontra-se no documento [Especificação de Requisitos e Formatos para Entrega de Setores Estratégicos para o AdaptaBrasil MCTI](https://docs.google.com/document/d/1ZYOQricIqeNkZ3XnLoSXp-lKle9V1UTb-acASZtAa4E/edit?tab=t.0).
 - **--verbose**: Exibe mensagens detalhadas sobre o andamento do processo de importação.
 
@@ -67,7 +67,7 @@ Exemplo:
 ```
 
 - **min_value**: determina o menor valor de um indicador no banco de dados. Esse valor será somado aos ids
-de indicadores informados nos arquivos de entrada, que começam sempre do valor 1n conforme definido na [Especificação de Requisitos](https://docs.google.com/document/d/1ZYOQricIqeNkZ3XnLoSXp-lKle9V1UTb-acASZtAa4E/edit?tab=t.0).
+de indicadores informados nos arquivos de entrada, que começam sempre do valor **1** conforme definido na [Especificação de Requisitos](https://docs.google.com/document/d/1ZYOQricIqeNkZ3XnLoSXp-lKle9V1UTb-acASZtAa4E/edit?tab=t.0).
 - **after_all_insert**: script SQL a ser executado depois que todos os dados forem inseridos no banco.  
 Tem por objetivo atualizar dados no banco de dados que não são informados nas planilhas.   
 Ex:
@@ -90,7 +90,7 @@ UPDATE _schema_.year set default_value = 1
 where id = (SELECT min(id) FROM _schema_.year WHERE sep_id = _sep_id_) AND sep_id = _sep_id_;  
 
 -- Seta os campos default_value e o orderby na tabela scenario do banco de dados 
-UPDATE _schema_.scenario SET default_value = 0,orderby = scenario_id - (SELECT min(scenario_id) 
+UPDATE _schema_.scenario SET default_value = 0, orderby = scenario_id - (SELECT min(scenario_id) 
 FROM _schema_.scenario WHERE sep_id = _sep_id_)+1 
 WHERE sep_id = _sep_id_;  
 UPDATE _schema_.scenario SET default_value = 1 
