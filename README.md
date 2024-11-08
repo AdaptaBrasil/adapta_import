@@ -3,21 +3,21 @@
 ## Introdução
 
 Esse repositório contém a ferramenta responsável por importar dados de Setores Socio-econômicos para a plataforma [AdaptaBrasil](https://sistema.adaptabrasil.mcti.gov.br/).
-Os dados de entrada são em formato XLSX ou CSV, e devem ter sido antes validados pelo Canoa, portal de validação dos dados a serem importados.
+Os dados de entrada serão em formato XLSX, e devem ter sido antes validados pelo Canoa, portal de validação dos dados a serem importados.
 
 ## Características Técnicas
 
 ### Linguagem de Programação
 - **Python**: O Adapta Parser é desenvolvido em Python.
-- 
+
 ### Dependências
 - **Pandas**: Utilizado para a leitura, manipulação e análise de dados em arquivos de planilhas.
 - **Argparse**: Facilita a criação de interfaces de linha de comando, permitindo a passagem de argumentos para o script.
-- **SQLAlchemy**: Usada para fazer o acesso a banco de dados, fornecendo recursos de conexão,obtenção e atualização de dados.
+- **SQLAlchemy**: Usada para fazer o acesso a banco de dados, fornecendo recursos de conexão, obtenção e atualização de dados.
 - **NumPy**: Provê a validação de números de ponto flutuante.
 
 ### Dependências de produção
-- **Python 3.6+**: A versão mínima do Python necessária para executar o Adapta Import.
+- **Python 3.6**: A versão mínima do Python necessária para executar o Adapta Import.
 - Essa app foi testada apenas em ambiente Windows, apsear de ter sido feita pensando também no ambiente Linux.
 
 ```shell
@@ -25,7 +25,7 @@ Os dados de entrada são em formato XLSX ou CSV, e devem ter sido antes validado
 ```
 
 ### Funcionalidades
-A partir da indicação do diretório onde existe um conjunto de determinados arquivos XLS, XLSX ou CSV, 
+A partir da indicação do diretório onde existe um conjunto de determinados arquivos XLS ou XLSX, 
 outros parâmetros passados em linha de comando e um arquivo json contendo outras informações, os dados são importados 
 para um determinado banco de dados cuja string de conexão é indicada por uma variável de ambiente. 
 O nome dessa variável é também indicado na linha de comando.
@@ -33,14 +33,17 @@ O nome dessa variável é também indicado na linha de comando.
 ### Argumentos de execução
 - **--schema**: (obrigatório) Schema destinatário dos dados.
 - **--conn_variable_name**: (obrigatório) Variável de ambiente com os parâmetros de conexão. Essa variável deve
-seguir o formato especificado [aqui](https://www.geeksforgeeks.org/connecting-postgresql-with-sqlalchemy-in-python/).  
-Ex:  
+seguir o formato especificado abaixo:
 ```
 postgresql+psycopg2://<usuário>:<senha>@<ip do servidor>:<porta>/<banco de dados>
 ```
+Mais informações [aqui](https://www.geeksforgeeks.org/connecting-postgresql-with-sqlalchemy-in-python/).
 
-- **--sep_id**: Id do Setor Estratégico destinatário dos dados no banco.
-- **--input_folder**: Caminho para a pasta de entrada. 
+- **--sep_id**: Id do Setor Estratégico destinatário dos dados no banco. Os dados referentes ao Setor já deverão existir na tabela **sep** com o id aqui indicado.
+- **--input_folder**: Caminho para a pasta de entrada. Nessa pasta deverão obrigatoriamente existir os arquivos com os dados para importação:
+**cenários.xlsx**, **composição.xlsx**, **descrição.xlsx**, **referência_temporal.xlsx**, **valores.xlsx**. 
+- O arquivo **proporcionalidades.xlsx** é opcional, existirá a depender das características do Setor Estratégico.  
+A especificação do formato e conteúdo desses arquivos encontra-se no documento [Especificação de Requisitos e Formatos para Entrega de Setores Estratégicos para o AdaptaBrasil MCTI](https://docs.google.com/document/d/1ZYOQricIqeNkZ3XnLoSXp-lKle9V1UTb-acASZtAa4E/edit?tab=t.0).
 - **--verbose**: Exibe mensagens detalhadas sobre o andamento do processo de importação.
 
 ### Arquivo de parâmetros JSON
@@ -64,7 +67,7 @@ Exemplo:
 ```
 
 - **min_value**: determina o menor valor de um indicador no banco de dados. Esse valor será somado aos ids
-de indicadores informados nos arquivos de entrada, que começam sempre do valor 1.
+de indicadores informados nos arquivos de entrada, que começam sempre do valor 1n conforme definido na [Especificação de Requisitos](https://docs.google.com/document/d/1ZYOQricIqeNkZ3XnLoSXp-lKle9V1UTb-acASZtAa4E/edit?tab=t.0).
 - **after_all_insert**: script SQL a ser executado depois que todos os dados forem inseridos no banco.  
 Tem por objetivo atualizar dados no banco de dados que não são informados nas planilhas.   
 Ex:
@@ -132,5 +135,3 @@ fazendo os ajustes necessários.
 - **insert_contributions**: os dados vindos da planilha **proporcionalidades.xlsx** serão primeiramente importados para uma tabela
 temporária no banco, **_proporcionalidades**. Essa sentença irá migrar esses dados para a tabela definitiva, **contribution**, 
 fazendo os ajustes necessários.
-
-
