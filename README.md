@@ -8,8 +8,8 @@ Os dados de entrada são em formato XLSX ou CSV, e devem ter sido antes validado
 ## Características Técnicas
 
 ### Linguagem de Programação
-- **Python**: O Adapta Parser é desenvolvido em Python, aproveitando sua versatilidade e as extensas bibliotecas disponíveis para manipulação de dados.
-
+- **Python**: O Adapta Parser é desenvolvido em Python.
+- 
 ### Dependências
 - **Pandas**: Utilizado para a leitura, manipulação e análise de dados em arquivos de planilhas.
 - **Argparse**: Facilita a criação de interfaces de linha de comando, permitindo a passagem de argumentos para o script.
@@ -72,10 +72,12 @@ Ex:
 -- Insere o link para a imagem no Setor Estratégico na tabela image
 INSERT INTO _schema_.image (id, imageurl, indicator_id)   
 SELECT _min_value_,'https://s3.sa-east-1.amazonaws.com/cache-sistema.adaptabrasil.mcti.gov.br/imagens/201.svg', _min_value_ ON CONFLICT DO NOTHING;
+
 -- Insere na tabela indicator_indicator o registro responsável por conectar o indicador de nível 1 com o
 -- registro existente no banco que conecta todos os Setores.
 INSERT INTO _schema_.indicator_indicator (indicator_id_master, indicator_id_detail)  
 SELECT 0, _min_value_ FROM _schema_.indicator_indicator ON CONFLICT DO NOTHING;
+
 -- Seta os campos default_value e o orderby na tabela year do banco de dados 
 UPDATE _schema_.year SET default_value = 0,
                          orderby = id - (select min(id) FROM _schema_.year 
@@ -83,15 +85,18 @@ UPDATE _schema_.year SET default_value = 0,
 WHERE sep_id = _sep_id_;
 UPDATE _schema_.year set default_value = 1 
 where id = (SELECT min(id) FROM _schema_.year WHERE sep_id = _sep_id_) AND sep_id = _sep_id_;  
+
 -- Seta os campos default_value e o orderby na tabela scenario do banco de dados 
 UPDATE _schema_.scenario SET default_value = 0,orderby = scenario_id - (SELECT min(scenario_id) 
 FROM _schema_.scenario WHERE sep_id = _sep_id_)+1 
 WHERE sep_id = _sep_id_;  
 UPDATE _schema_.scenario SET default_value = 1 
 WHERE scenario_id = (SELECT min(scenario_id) FROM _schema_.scenario WHERE sep_id = _sep_id_) AND sep_id = _sep_id_; 
+
 -- Seta o id da legenda de cada indicador. Essa sentença segue a regra usada até hoje no schema adaptabrasil. 
 -- Outros schemas poderão ter regiras distintas.
 UPDATE _schema_.indicator set legend_id = pessimist + 1 WHERE sep_id = _sep_id_;
+
 -- Executa a procedure que atualiza as views materializadas do schema. 
 -- Necessário executar toda ver que algun dado no banco for atualizado.
 SELECT public.__refreshallmaterializedviews('_schema_');
