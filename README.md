@@ -47,7 +47,7 @@ postgresql+psycopg2://<usuário>:<senha>@<ip do servidor>:<porta>/<banco de dado
 Um arquivo JSON deve existir no diretório indicado em **input_folder** informando outros outros parâmetros 
 mais específicos de um determinado Setor Estratégico.  
 Exemplo:  
-```JSONAsPearl
+```JSON
 {
 	"min_value": 5000,
 	"after_all_insert": "INSERT INTO _schema_.image (id, imageurl, indicator_id) \nselect _min_value_,'https://s3.sa-east-1.amazonaws.com/cache-sistema.adaptabrasil.mcti.gov.br/imagens/201.svg', _min_value_ ON CONFLICT DO NOTHING; \nINSERT INTO _schema_.indicator_indicator (indicator_id_master, indicator_id_detail)\nSELECT 0, _min_value_ FROM _schema_.indicator_indicator ON CONFLICT DO NOTHING;\nupdate _schema_.year set default_value = 0,orderby = id - (select min(id) from _schema_.year where sep_id = _sep_id_)+1  where sep_id = _sep_id_;\nupdate _schema_.year set default_value = 1 where id = (select min(id) from _schema_.year where sep_id = _sep_id_) and sep_id = _sep_id_;\nupdate _schema_.scenario set default_value = 0,orderby = scenario_id - (select min(scenario_id) from _schema_.scenario where sep_id = _sep_id_)+1  where sep_id = _sep_id_;\nupdate _schema_.scenario set default_value = 1 where scenario_id = (select min(scenario_id) from _schema_.scenario where sep_id = _sep_id_) and sep_id = _sep_id_;\nupdate _schema_.\"indicator\" set legend_id = pessimist + 1 where sep_id = _sep_id_;\nSELECT public.\"__refreshallmaterializedviews\"('_schema_');\n",
