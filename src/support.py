@@ -37,7 +37,7 @@ class Support:
                               'indicator': {'id': 'codigo',
                                             'level':'nivel',
                                             'name': 'nome_simples',
-                                            'title': 'nome_simples',
+                                            'title': 'nome_completo',
                                             'shortname': 'nome_simples',
                                             'simple_description': 'desc_simples',
                                             'complete_description': 'desc_completa',

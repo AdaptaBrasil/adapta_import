@@ -6,6 +6,7 @@ from src.db import dbThings
 from numpy import isnan
 import pandas as pd
 import math
+import numpy as np
 
 class Inserts:
 
@@ -216,11 +217,16 @@ class Inserts:
                   index=False)
         print(f"Dados no dataframe: {(len(DataframesInput.proporcionalidades) - 2) * (len(df.columns)-1)}")
         sql = f"select count(1) from {Support.schema}._proporcionalidades"
-        #print(f"Registros na temporária: {dbThings.executeSQL(sql).first()[0]}")
+        print(f"Registros na temporária: {dbThings.executeSQL(sql).first()[0]}")
         if 'insert_contributions' in Support.params.keys():
             print(f"Registros inseridos na contributions: "),
             dbThings.executeSQL(Support.params['insert_contributions'])
 
+
+    @classmethod
+    def postProcessing(cls):
+        if 'after_all_insert' in Support.params.keys():
+            dbThings.executeSQL(Support.params['after_all_insert'])
 
     @classmethod
     def process(cls):
@@ -236,11 +242,6 @@ class Inserts:
         if not DataframesInput.proporcionalidades is None:
             cls.processContribution()
         cls.postProcessing()
-
-    @classmethod
-    def postProcessing(cls):
-        if 'after_all_insert' in Support.params.keys():
-            dbThings.executeSQL(Support.params['after_all_insert'])
 
 
 
