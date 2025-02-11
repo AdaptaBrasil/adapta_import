@@ -8,7 +8,7 @@ Os dados de entrada serão em formato XLSX, e devem ter sido antes validados pel
 ## Características Técnicas
 
 ### Linguagem de Programação
-- **Python**: O Adapta Parser é desenvolvido em Python.
+O Adapta Import é desenvolvido em Python.
 
 ### Dependências
 - **Pandas**: Utilizado para a leitura, manipulação e análise de dados em arquivos de planilhas.
@@ -18,7 +18,7 @@ Os dados de entrada serão em formato XLSX, e devem ter sido antes validados pel
 
 ### Dependências de produção
 - **Python 3.6**: A versão mínima do Python necessária para executar o Adapta Import.
-- Essa app foi testada apenas em ambiente Windows, apesar de ter sido feita pensando também no ambiente Linux.
+- Essa app foi testada apenas em ambiente Windows, apsear de ter sido feita pensando também no ambiente Linux.
 
 ```shell
     pip install -r requirements.txt
@@ -39,10 +39,10 @@ postgresql+psycopg2://<usuário>:<senha>@<ip do servidor>:<porta>/<banco de dado
 ```
 Mais informações [aqui](https://www.geeksforgeeks.org/connecting-postgresql-with-sqlalchemy-in-python/).
 
-- **--sep_id**: (obrigatório) Id do Setor Estratégico destinatário dos dados no banco. Os dados referentes ao Setor já deverão existir na tabela **sep** com o id aqui indicado.
-- **--input_folder**: (obrigatório) Caminho para a pasta de entrada. Nessa pasta deverão obrigatoriamente existir os arquivos com os dados para importação:
-**cenários.xlsx**, **composição.xlsx**, **descrição.xlsx**, **referência_temporal.xlsx**, **valores.xlsx**.  
-O arquivo **proporcionalidades.xlsx** é opcional, existirá a depender das características do Setor Estratégico.  
+- **--sep_id**: Id do Setor Estratégico destinatário dos dados no banco. Os dados referentes ao Setor já deverão existir na tabela **sep** com o id aqui indicado.
+- **--input_folder**: Caminho para a pasta de entrada. Nessa pasta deverão obrigatoriamente existir os arquivos com os dados para importação:
+**cenários.xlsx**, **composição.xlsx**, **descrição.xlsx**, **referência_temporal.xlsx**, **valores.xlsx**. 
+- O arquivo **proporcionalidades.xlsx** é opcional, existirá a depender das características do Setor Estratégico.  
 A especificação do formato e conteúdo desses arquivos encontra-se no documento [Especificação de Requisitos e Formatos para Entrega de Setores Estratégicos para o AdaptaBrasil MCTI](https://docs.google.com/document/d/1ZYOQricIqeNkZ3XnLoSXp-lKle9V1UTb-acASZtAa4E/edit?tab=t.0).
 - **--verbose**: Exibe mensagens detalhadas sobre o andamento do processo de importação.
 
